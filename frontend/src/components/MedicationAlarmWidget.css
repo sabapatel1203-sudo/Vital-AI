@@ -1,0 +1,158 @@
+.med-alarm-widget {
+  background: linear-gradient(135deg, rgba(59, 16, 30, 0.75) 0%, rgba(30, 9, 17, 0.85) 100%);
+  border: 1px solid rgba(197, 40, 72, 0.4);
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease;
+}
+
+.med-alarm-widget:hover {
+  border-color: var(--color-heart-red, #C52848);
+  box-shadow: 0 6px 20px rgba(197, 40, 72, 0.25);
+}
+
+.med-alarm-widget--alerting {
+  border-color: #ff3366;
+  background: linear-gradient(135deg, rgba(143, 32, 56, 0.85) 0%, rgba(59, 16, 30, 0.95) 100%);
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.45);
+}
+
+.med-alarm-widget--complete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.med-alarm-widget--compact {
+  padding: 0.65rem 0.85rem;
+}
+
+.med-alarm-widget__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.med-alarm-widget__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #ff99aa;
+  text-transform: uppercase;
+}
+
+.med-alarm-widget__countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-warm-white, #FFF7F7);
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(197, 40, 72, 0.3);
+}
+
+.med-alarm-widget__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.med-alarm-widget__left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+}
+
+.med-alarm-widget__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  background: rgba(197, 40, 72, 0.15);
+  border: 1px solid rgba(197, 40, 72, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.med-alarm-widget__icon--done {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #10b981;
+}
+
+.med-alarm-widget__name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-warm-white, #FFF7F7);
+  letter-spacing: -0.01em;
+}
+
+.med-alarm-widget__dosage {
+  color: var(--color-heart-red, #C52848);
+  font-weight: 600;
+  font-size: 0.775rem;
+}
+
+.med-alarm-widget__sub {
+  font-size: 0.7rem;
+  color: var(--color-muted-pink, #A36B7E);
+  margin-top: 0.15rem;
+}
+
+.med-alarm-widget__title {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #FFF7F7;
+}
+
+.med-alarm-widget__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.med-alarm-widget__btn-take {
+  font-size: 0.725rem !important;
+  padding: 0.35rem 0.65rem !important;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 0.4rem;
+}
+
+.btn-widget-icon {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-muted-pink, #A36B7E);
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-widget-icon:hover {
+  background: rgba(197, 40, 72, 0.25);
+  border-color: var(--color-heart-red, #C52848);
+  color: #fff;
+  transform: translateY(-1px);
+}
+

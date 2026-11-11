@@ -1,0 +1,296 @@
+.alarm-ringing-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 3, 7, 0.88);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem;
+  animation: backdrop-fade-in 0.25s ease-out;
+}
+
+.alarm-ringing-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: linear-gradient(180deg, #2D0C17 0%, #18050C 100%);
+  border: 2px solid var(--color-heart-red, #C52848);
+  border-radius: 1.25rem;
+  box-shadow: 0 0 50px rgba(197, 40, 72, 0.5), 0 25px 60px rgba(0, 0, 0, 0.85);
+  padding: 2rem 2.25rem;
+  color: var(--color-warm-white, #FFF7F7);
+  overflow: hidden;
+  animation: dialog-pop-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.alarm-ringing-radiance {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(220, 38, 70, 0.45) 0%, rgba(220, 38, 70, 0) 70%);
+  filter: blur(35px);
+  pointer-events: none;
+}
+
+.alarm-ringing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.alarm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(197, 40, 72, 0.25);
+  border: 1px solid var(--color-heart-red, #C52848);
+  border-radius: 9999px;
+  font-size: 0.725rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ff99aa;
+}
+
+.alarm-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff3366;
+  box-shadow: 0 0 10px #ff3366;
+  animation: pulse-ring 1.5s infinite;
+}
+
+.alarm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alarm-tool-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFF7F7;
+  padding: 0.45rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.alarm-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.05);
+}
+
+/* Glowing Icon Animation */
+.alarm-icon-container {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0.5rem auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alarm-center-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e11d48, #881337);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(225, 29, 72, 0.6);
+  z-index: 2;
+}
+
+.alarm-pulse-ring {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(225, 29, 72, 0.6);
+  animation: pulse-expand 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.ring-2 {
+  animation-delay: 0.5s;
+}
+
+.ring-3 {
+  animation-delay: 1s;
+}
+
+@keyframes pulse-expand {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.alarm-body-content {
+  text-align: center;
+}
+
+.alarm-scheduled-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.775rem;
+  color: var(--color-brain-rose, #D7839C);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.alarm-med-name {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #FFF7F7;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.alarm-med-dosage {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-heart-red, #C52848);
+  margin-top: 0.25rem;
+}
+
+.alarm-indication-badge {
+  display: inline-block;
+  margin: 0.75rem 0;
+  padding: 0.35rem 0.75rem;
+  background: rgba(59, 16, 30, 0.75);
+  border: 1px solid rgba(143, 32, 56, 0.5);
+  border-radius: 0.5rem;
+  font-size: 0.775rem;
+  color: #FDA4AF;
+}
+
+.alarm-instruction-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  text-align: left;
+  background: rgba(30, 9, 17, 0.7);
+  border-left: 3px solid var(--color-heart-red, #C52848);
+  padding: 0.85rem 1rem;
+  border-radius: 0.5rem;
+  margin: 0.75rem 0 1rem;
+  font-size: 0.825rem;
+  line-height: 1.45;
+  color: var(--color-warm-white, #FFF7F7);
+}
+
+.alarm-prescriber-note {
+  font-size: 0.725rem;
+  color: var(--color-muted-pink, #A36B7E);
+  margin-bottom: 1.5rem;
+}
+
+/* Actions */
+.alarm-action-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alarm-btn-take {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.95rem 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+}
+
+.alarm-btn-take:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.5);
+}
+
+.alarm-secondary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.8fr;
+  gap: 0.5rem;
+}
+
+.alarm-btn-snooze {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.5rem;
+  color: #FFF7F7;
+  font-size: 0.775rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.alarm-btn-snooze:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.alarm-btn-dismiss {
+  padding: 0.65rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: var(--color-muted-pink, #A36B7E);
+  font-size: 0.775rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.alarm-btn-dismiss:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes backdrop-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialog-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+

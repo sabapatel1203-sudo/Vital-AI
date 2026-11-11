@@ -1,0 +1,309 @@
+/* ==========================================================================
+   VITALIS AI – Crimson Anatomy 3D Workspace Canvas Styles
+   ========================================================================== */
+
+.crimson-twin-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 580px;
+  background: radial-gradient(circle at 50% 45%, #2a0b16 0%, #1a0810 55%, #10040a 100%);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(143, 32, 56, 0.35);
+  box-shadow: 0 16px 48px rgba(10, 3, 6, 0.7), inset 0 0 80px rgba(197, 40, 72, 0.08);
+}
+
+.crimson-twin-canvas {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  display: block;
+}
+
+.crimson-twin-canvas:active {
+  cursor: grabbing;
+}
+
+/* Subtle anatomical coordinate overlay */
+.crimson-twin-hud-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(215, 131, 156, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(215, 131, 156, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Restrained corner markers */
+.crimson-hud-bracket {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--color-crimson);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.crimson-hud-bracket--tl {
+  top: 16px;
+  left: 16px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+.crimson-hud-bracket--tr {
+  top: 16px;
+  right: 16px;
+  border-top: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+.crimson-hud-bracket--bl {
+  bottom: 16px;
+  left: 16px;
+  border-bottom: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+.crimson-hud-bracket--br {
+  bottom: 16px;
+  right: 16px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+/* Top Floating Controls Bar */
+.crimson-twin-header {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+  pointer-events: none;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.crimson-twin-mode-toggle {
+  pointer-events: auto;
+  display: inline-flex;
+  background: rgba(34, 13, 22, 0.85);
+  border: 1px solid rgba(143, 32, 56, 0.45);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.crimson-twin-mode-btn {
+  background: transparent;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-full);
+  color: var(--color-muted-pink);
+  font-size: 0.785rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.crimson-twin-mode-btn.active {
+  background: linear-gradient(135deg, var(--color-heart-red), var(--color-crimson));
+  color: #FFF7F7;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(197, 40, 72, 0.4);
+}
+
+.crimson-twin-system-bar {
+  pointer-events: auto;
+  display: flex;
+  gap: 0.35rem;
+  background: rgba(34, 13, 22, 0.8);
+  border: 1px solid rgba(143, 32, 56, 0.35);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  backdrop-filter: blur(12px);
+  overflow-x: auto;
+}
+
+.crimson-twin-sys-btn {
+  background: transparent;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  color: var(--color-muted-pink);
+  font-size: 0.725rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.crimson-twin-sys-btn:hover {
+  color: var(--color-warm-white);
+  background: rgba(215, 131, 156, 0.1);
+}
+
+.crimson-twin-sys-btn.active {
+  background: rgba(197, 40, 72, 0.25);
+  color: var(--color-heart-red);
+  border: 1px solid rgba(197, 40, 72, 0.45);
+}
+
+/* Bottom Telemetry HUD overlay */
+.crimson-twin-footer-hud {
+  position: absolute;
+  bottom: 18px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.crimson-twin-vital-card {
+  pointer-events: auto;
+  background: rgba(34, 13, 22, 0.88);
+  border: 1px solid rgba(143, 32, 56, 0.4);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.95rem;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.crimson-twin-vital-card:hover {
+  border-color: var(--color-heart-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(197, 40, 72, 0.3);
+}
+
+.crimson-twin-vital-card.selected {
+  border-color: var(--color-heart-red);
+  background: rgba(59, 16, 30, 0.95);
+  box-shadow: 0 0 20px rgba(197, 40, 72, 0.35);
+}
+
+.crimson-twin-controls {
+  pointer-events: auto;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.crimson-twin-ctrl-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: rgba(34, 13, 22, 0.85);
+  border: 1px solid rgba(143, 32, 56, 0.35);
+  color: var(--color-muted-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(8px);
+}
+
+.crimson-twin-ctrl-btn:hover {
+  color: var(--color-warm-white);
+  border-color: var(--color-brain-rose);
+  background: rgba(59, 16, 30, 0.9);
+}
+
+/* Realistic Anatomical Callout Pin */
+.crimson-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 15;
+  transition: transform var(--transition-fast);
+}
+
+.crimson-pin:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.crimson-pin-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-heart-red);
+  box-shadow: 0 0 10px var(--color-heart-red);
+  border: 2px solid #FFF7F7;
+  position: relative;
+}
+
+.crimson-pin-dot::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(197, 40, 72, 0.6);
+  animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.crimson-pin-label {
+  background: rgba(24, 9, 15, 0.92);
+  border: 1px solid rgba(197, 40, 72, 0.4);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-xs);
+  color: var(--color-warm-white);
+  font-size: 0.725rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.crimson-pin--active .crimson-pin-dot {
+  background: #FFF7F7;
+  box-shadow: 0 0 16px var(--color-heart-red), 0 0 24px var(--color-heart-red);
+}
+
+.crimson-pin--active .crimson-pin-label {
+  background: linear-gradient(135deg, var(--color-heart-red), var(--color-crimson));
+  border-color: #FFF7F7;
+  box-shadow: 0 0 14px rgba(197, 40, 72, 0.6);
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .crimson-twin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .crimson-twin-footer-hud {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}

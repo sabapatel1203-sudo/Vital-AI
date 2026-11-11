@@ -1,0 +1,217 @@
+/* ==========================================================================
+   VITALIS AI – Crimson Anatomy Patient Clinical Dashboard
+   ========================================================================== */
+
+.patient-dash-page {
+  padding-top: 64px;
+  min-height: 100vh;
+  background-color: var(--color-bg-burgundy);
+  color: var(--color-warm-white);
+}
+
+.patient-dash-header {
+  border-bottom: 1px solid rgba(143, 32, 56, 0.25);
+  background: linear-gradient(180deg, rgba(34, 13, 22, 0.9) 0%, rgba(24, 9, 15, 0.95) 100%);
+  padding: 1.75rem 2.5rem;
+}
+
+.patient-dash-header__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.patient-dash-user-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.patient-dash-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-heart-red), var(--color-crimson));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFF7F7;
+  box-shadow: 0 4px 16px rgba(197, 40, 72, 0.35);
+}
+
+.patient-dash-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-warm-white);
+  margin-bottom: 0.2rem;
+}
+
+.patient-dash-meta {
+  font-size: 0.8rem;
+  color: var(--color-muted-pink);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* Main Dashboard Workspace Layout */
+.patient-dash-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 4rem;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 2rem;
+}
+
+/* Clinical Panel Containers */
+.clinical-panel {
+  background: var(--color-bg-surface);
+  border: 1px solid rgba(143, 32, 56, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.75rem;
+}
+
+.clinical-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(143, 32, 56, 0.2);
+}
+
+.clinical-panel-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-warm-white);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Compact Data Table / Rows */
+.data-row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid rgba(143, 32, 56, 0.15);
+  font-size: 0.85rem;
+  transition: background var(--transition-fast);
+}
+
+.data-row-item:last-child {
+  border-bottom: none;
+}
+
+.data-row-item:hover {
+  background: rgba(59, 16, 30, 0.3);
+}
+
+.data-row-label {
+  font-weight: 600;
+  color: var(--color-warm-white);
+}
+
+.data-row-subtext {
+  font-size: 0.75rem;
+  color: var(--color-muted-pink);
+  margin-top: 0.15rem;
+}
+
+/* Medication Adherence Checklist Item */
+.med-row-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface-elevated);
+  border: 1px solid rgba(143, 32, 56, 0.25);
+  margin-bottom: 0.65rem;
+}
+
+.med-row-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-warm-white);
+}
+
+.med-row-meta {
+  font-size: 0.75rem;
+  color: var(--color-muted-pink);
+}
+
+/* Timeline Vertical Track */
+.clinical-timeline {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.clinical-timeline::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: 2px;
+  background: rgba(143, 32, 56, 0.35);
+}
+
+.timeline-entry {
+  position: relative;
+}
+
+.timeline-bullet {
+  position: absolute;
+  left: -1.5rem;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-heart-red);
+  box-shadow: 0 0 8px var(--color-heart-red);
+  border: 2px solid var(--color-bg-burgundy);
+}
+
+.timeline-date {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: var(--color-heart-red);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.timeline-heading {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-warm-white);
+}
+
+.timeline-body-text {
+  font-size: 0.785rem;
+  color: var(--color-muted-pink);
+  margin-top: 0.2rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 1024px) {
+  .patient-dash-main {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+}

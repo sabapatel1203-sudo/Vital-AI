@@ -1,0 +1,77 @@
+/* ==========================================================================
+   VITALIS AI – Crimson Anatomy Authentication (Split Screen & Cards)
+   ========================================================================== */
+
+.crimson-login-split {
+  min-height: 100vh;
+  padding-top: 64px;
+  display: flex;
+  background-color: var(--color-bg-burgundy);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left 3D Anatomical Half */
+.crimson-login-visual {
+  flex: 1.1;
+  position: relative;
+  min-height: calc(100vh - 64px);
+  background: radial-gradient(circle at 50% 50%, #290c17 0%, #1a0710 60%, #12040b 100%);
+  border-right: 1px solid rgba(143, 32, 56, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.crimson-login-visual-inner {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 90%;
+  min-height: 520px;
+}
+
+.crimson-login-floating-badge {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: rgba(24, 9, 15, 0.9);
+  border: 1px solid rgba(197, 40, 72, 0.4);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  z-index: 20;
+}
+
+/* Right Form Half */
+.crimson-login-form-wrap {
+  flex: 0.9;
+  min-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  background: var(--color-bg-burgundy);
+  overflow-y: auto;
+}
+
+.crimson-login-card {
+  width: 100%;
+  max-width: 440px;
+}
+
+@media (max-width: 960px) {
+  .crimson-login-split {
+    flex-direction: column;
+  }
+  .crimson-login-visual {
+    display: none;
+  }
+  .crimson-login-form-wrap {
+    min-width: 100%;
+    padding: 3rem 1.5rem;
+  }
+}

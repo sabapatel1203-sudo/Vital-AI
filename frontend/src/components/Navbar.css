@@ -1,0 +1,164 @@
+/* ==========================================================================
+   VITALIS AI – Crimson Anatomy Slim Navbar
+   ========================================================================== */
+
+.crimson-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  background: rgba(24, 9, 15, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(143, 32, 56, 0.25);
+  transition: all var(--transition-normal);
+}
+
+.crimson-navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.crimson-navbar__crest {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--color-heart-red), var(--color-crimson));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 14px rgba(197, 40, 72, 0.4);
+}
+
+.crimson-navbar__logo-text {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--color-warm-white);
+  text-transform: uppercase;
+}
+
+.crimson-navbar__logo-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-xs);
+  background: rgba(197, 40, 72, 0.2);
+  color: var(--color-heart-red);
+  border: 1px solid rgba(197, 40, 72, 0.35);
+  margin-left: 0.35rem;
+  letter-spacing: 0.08em;
+}
+
+.crimson-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.crimson-navbar__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-muted-pink);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.01em;
+  position: relative;
+  padding: 0.35rem 0;
+}
+
+.crimson-navbar__link:hover,
+.crimson-navbar__link.active {
+  color: var(--color-warm-white);
+}
+
+.crimson-navbar__link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-heart-red);
+  box-shadow: 0 0 8px var(--color-heart-red);
+}
+
+.crimson-navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.crimson-navbar__user-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(59, 16, 30, 0.6);
+  border: 1px solid rgba(143, 32, 56, 0.35);
+  border-radius: var(--radius-full);
+}
+
+.crimson-navbar__avatar-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-heart-red);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.crimson-navbar__user-name {
+  font-size: 0.825rem;
+  color: var(--color-warm-white);
+  font-weight: 600;
+}
+
+.crimson-navbar__hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-warm-white);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.crimson-navbar__mobile {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: rgba(24, 9, 15, 0.98);
+  border-bottom: 1px solid var(--color-oxblood);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 960px) {
+  .crimson-navbar {
+    padding: 0 1.5rem;
+  }
+  .crimson-navbar__links {
+    display: none;
+  }
+  .crimson-navbar__hamburger {
+    display: block;
+  }
+}

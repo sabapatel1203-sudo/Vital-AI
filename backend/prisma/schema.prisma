@@ -1,0 +1,577 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ──
+
+enum UserRole {
+  PATIENT
+  DOCTOR
+  ADMIN
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum RecordType {
+  DIAGNOSIS
+  LAB_REPORT
+  IMAGING
+  PRESCRIPTION
+  PROCEDURE
+  CONSULTATION
+  DISCHARGE_SUMMARY
+  PATHOLOGY
+  OTHER
+}
+
+enum RecordSource {
+  PATIENT_UPLOADED
+  CLINICIAN_ENTERED
+  AI_EXTRACTED
+  EHR_IMPORTED
+  LAB_DIRECT
+}
+
+enum MedicationStatus {
+  ACTIVE
+  COMPLETED
+  DISCONTINUED
+  ON_HOLD
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum AvatarType {
+  PHOTO_BASED
+  CAMERA_CAPTURE
+  MANUAL
+  DEFAULT
+}
+
+enum ExplanationLevel {
+  SIMPLE
+  DETAILED
+  CLINICAL
+}
+
+enum ConsentScope {
+  FULL_RECORDS
+  SPECIFIC_ORGAN
+  SPECIFIC_RECORD
+  LAB_RESULTS
+  IMAGING
+  MEDICATIONS
+}
+
+// ── Models ──
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  role          UserRole  @default(PATIENT)
+  emailVerified Boolean   @default(false)
+  avatarUrl     String?
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  patientProfile  PatientProfile?
+  doctorProfile   DoctorProfile?
+  avatarProfile   AvatarProfile?
+  auditLogs       AuditLog[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model PatientProfile {
+  id                String    @id @default(uuid())
+  userId            String    @unique
+  dateOfBirth       DateTime?
+  sex               Sex?
+  height            Float?    // cm
+  weight            Float?    // kg
+  bloodType         String?
+  preferredLanguage String    @default("en")
+  emergencyContact  String?
+  onboardingComplete Boolean  @default(false)
+
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  allergies         Allergy[]
+  diagnoses         Diagnosis[]
+  medications       Medication[]
+  medicalRecords    MedicalRecord[]
+  medicalReports    MedicalReport[]
+  procedures        Procedure[]
+  medicalImages     MedicalImage[]
+  annotations       ClinicalAnnotation[]   @relation("PatientAnnotations")
+  consultations     Consultation[]          @relation("PatientConsultations")
+  appointments      Appointment[]           @relation("PatientAppointments")
+  timelineEvents    TimelineEvent[]
+  aiExplanations    AIExplanation[]
+  consentGiven      ConsentRecord[]         @relation("PatientConsents")
+  permissionsGiven  AccessPermission[]      @relation("PatientPermissions")
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model DoctorProfile {
+  id              String             @id @default(uuid())
+  userId          String             @unique
+  specialization  String?
+  licenseNumber   String?
+  institution     String?
+  npiNumber       String?
+  verified        VerificationStatus @default(UNVERIFIED)
+  verifiedAt      DateTime?
+
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  annotations     ClinicalAnnotation[]  @relation("DoctorAnnotations")
+  consultations   Consultation[]        @relation("DoctorConsultations")
+  appointments    Appointment[]         @relation("DoctorAppointments")
+  diagnosisMade   Diagnosis[]           @relation("DiagnosingDoctor")
+  prescriptions   Medication[]          @relation("PrescribingDoctor")
+  proceduresDone  Procedure[]           @relation("PerformingDoctor")
+  consentsReceived ConsentRecord[]      @relation("DoctorConsents")
+  permissionsReceived AccessPermission[] @relation("DoctorPermissions")
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([licenseNumber])
+}
+
+model AvatarProfile {
+  id          String     @id @default(uuid())
+  userId      String     @unique
+  type        AvatarType @default(DEFAULT)
+  photoUrl    String?
+  bodyShape   String?
+  skinTone    String?
+  height      Float?
+  hairStyle   String?
+  modelUrl    String?
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model BodySystem {
+  id          String                @id @default(uuid())
+  name        String                @unique
+  slug        String                @unique
+  description String?
+  iconName    String?
+  sortOrder   Int                   @default(0)
+
+  structures  AnatomicalStructure[]
+
+  @@index([slug])
+}
+
+model AnatomicalStructure {
+  id          String    @id @default(uuid())
+  systemId    String
+  name        String
+  slug        String    @unique
+  description String?
+  function    String?   @db.Text
+  location    String?
+  parentId    String?
+  meshId      String?
+  sortOrder   Int       @default(0)
+
+  system      BodySystem             @relation(fields: [systemId], references: [id])
+  parent      AnatomicalStructure?   @relation("StructureHierarchy", fields: [parentId], references: [id])
+  children    AnatomicalStructure[]  @relation("StructureHierarchy")
+
+  medicalRecords   MedicalRecord[]
+  diagnoses        Diagnosis[]
+  procedures       Procedure[]
+  medicalImages    MedicalImage[]
+  annotations      ClinicalAnnotation[]
+  timelineEvents   TimelineEvent[]
+  reportFindings   ReportFinding[]
+
+  @@index([systemId])
+  @@index([slug])
+  @@index([parentId])
+}
+
+model MedicalRecord {
+  id                 String             @id @default(uuid())
+  patientId          String
+  organId            String?
+  type               RecordType
+  title              String
+  content            String?            @db.Text
+  date               DateTime
+  source             RecordSource       @default(PATIENT_UPLOADED)
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  verifiedBy         String?
+  verifiedAt         DateTime?
+  metadata           Json?
+
+  patient            PatientProfile     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  organ              AnatomicalStructure? @relation(fields: [organId], references: [id])
+  timelineEvents     TimelineEvent[]
+  aiExplanations     AIExplanation[]    @relation("RecordExplanations")
+
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  @@index([patientId])
+  @@index([organId])
+  @@index([type])
+  @@index([date])
+}
+
+model MedicalReport {
+  id              String    @id @default(uuid())
+  patientId       String
+  type            RecordType
+  title           String?
+  originalFileUrl String
+  originalFileName String?
+  mimeType        String?
+  fileSize        Int?
+  parsedContent   Json?
+  ocrText         String?   @db.Text
+  processingStatus String   @default("pending")
+
+  patient         PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  findings        ReportFinding[]
+  aiExplanations  AIExplanation[]  @relation("ReportExplanations")
+
+  uploadedAt      DateTime  @default(now())
+  processedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([type])
+}
+
+model ReportFinding {
+  id             String    @id @default(uuid())
+  reportId       String
+  organId        String?
+  name           String
+  value          String?
+  unit           String?
+  referenceRange String?
+  status         String?
+  notes          String?
+
+  report         MedicalReport        @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  organ          AnatomicalStructure? @relation(fields: [organId], references: [id])
+
+  createdAt      DateTime  @default(now())
+
+  @@index([reportId])
+  @@index([organId])
+}
+
+model Diagnosis {
+  id            String             @id @default(uuid())
+  patientId     String
+  organId       String?
+  icdCode       String?
+  title         String
+  description   String?            @db.Text
+  diagnosedDate DateTime
+  clinicianId   String?
+  status        String             @default("active")
+
+  patient       PatientProfile     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  organ         AnatomicalStructure? @relation(fields: [organId], references: [id])
+  clinician     DoctorProfile?     @relation("DiagnosingDoctor", fields: [clinicianId], references: [id])
+
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@index([patientId])
+  @@index([organId])
+  @@index([icdCode])
+}
+
+model Medication {
+  id            String           @id @default(uuid())
+  patientId     String
+  name          String
+  dosage        String?
+  frequency     String?
+  route         String?
+  indication    String?
+  prescribedById String?
+  startDate     DateTime?
+  endDate       DateTime?
+  status        MedicationStatus @default(ACTIVE)
+  notes         String?
+
+  patient       PatientProfile   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  prescribedBy  DoctorProfile?   @relation("PrescribingDoctor", fields: [prescribedById], references: [id])
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([patientId])
+  @@index([status])
+}
+
+model Allergy {
+  id        String    @id @default(uuid())
+  patientId String
+  allergen  String
+  severity  String?
+  reaction  String?
+  notes     String?
+
+  patient   PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([patientId])
+}
+
+model Procedure {
+  id          String    @id @default(uuid())
+  patientId   String
+  organId     String?
+  name        String
+  description String?   @db.Text
+  date        DateTime
+  clinicianId String?
+  outcome     String?
+  notes       String?   @db.Text
+
+  patient     PatientProfile      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  organ       AnatomicalStructure? @relation(fields: [organId], references: [id])
+  clinician   DoctorProfile?      @relation("PerformingDoctor", fields: [clinicianId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([organId])
+}
+
+model MedicalImage {
+  id          String    @id @default(uuid())
+  patientId   String
+  organId     String?
+  type        String
+  fileUrl     String
+  fileName    String?
+  mimeType    String?
+  description String?
+  date        DateTime?
+  metadata    Json?
+
+  patient     PatientProfile      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  organ       AnatomicalStructure? @relation(fields: [organId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([organId])
+}
+
+model ClinicalAnnotation {
+  id        String    @id @default(uuid())
+  patientId String
+  doctorId  String
+  organId   String?
+  content   String    @db.Text
+  position  Json?
+
+  patient   PatientProfile      @relation("PatientAnnotations", fields: [patientId], references: [id], onDelete: Cascade)
+  doctor    DoctorProfile       @relation("DoctorAnnotations", fields: [doctorId], references: [id])
+  organ     AnatomicalStructure? @relation(fields: [organId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([organId])
+}
+
+model Consultation {
+  id           String    @id @default(uuid())
+  patientId    String
+  doctorId     String
+  date         DateTime
+  summary      String?   @db.Text
+  findings     String?   @db.Text
+  followUpDate DateTime?
+  followUpNotes String?
+
+  patient      PatientProfile @relation("PatientConsultations", fields: [patientId], references: [id], onDelete: Cascade)
+  doctor       DoctorProfile  @relation("DoctorConsultations", fields: [doctorId], references: [id])
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([date])
+}
+
+model Appointment {
+  id        String            @id @default(uuid())
+  patientId String
+  doctorId  String
+  date      DateTime
+  type      String?
+  status    AppointmentStatus @default(SCHEDULED)
+  notes     String?
+  location  String?
+
+  patient   PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor    DoctorProfile  @relation("DoctorAppointments", fields: [doctorId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([date])
+  @@index([status])
+}
+
+model TimelineEvent {
+  id          String    @id @default(uuid())
+  patientId   String
+  organId     String?
+  recordId    String?
+  type        RecordType
+  title       String
+  date        DateTime
+  description String?   @db.Text
+  metadata    Json?
+
+  patient     PatientProfile       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  organ       AnatomicalStructure? @relation(fields: [organId], references: [id])
+  record      MedicalRecord?       @relation(fields: [recordId], references: [id])
+
+  createdAt   DateTime  @default(now())
+
+  @@index([patientId])
+  @@index([organId])
+  @@index([date])
+  @@index([type])
+}
+
+model AIExplanation {
+  id        String           @id @default(uuid())
+  patientId String
+  reportId  String?
+  recordId  String?
+  level     ExplanationLevel
+  content   String           @db.Text
+  model     String?
+  metadata  Json?
+
+  patient   PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  report    MedicalReport? @relation("ReportExplanations", fields: [reportId], references: [id])
+  record    MedicalRecord? @relation("RecordExplanations", fields: [recordId], references: [id])
+
+  createdAt DateTime       @default(now())
+
+  @@index([patientId])
+  @@index([reportId])
+  @@index([recordId])
+}
+
+model ConsentRecord {
+  id        String       @id @default(uuid())
+  patientId String
+  doctorId  String
+  scope     ConsentScope
+  granted   Boolean      @default(true)
+  expiresAt DateTime?
+  revokedAt DateTime?
+
+  patient   PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor    DoctorProfile  @relation("DoctorConsents", fields: [doctorId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+}
+
+model AccessPermission {
+  id           String    @id @default(uuid())
+  patientId    String
+  doctorId     String
+  resourceType String
+  resourceId   String?
+  granted      Boolean   @default(true)
+  expiresAt    DateTime?
+
+  patient      PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor       DoctorProfile  @relation("DoctorPermissions", fields: [doctorId], references: [id])
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([resourceType])
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  userId       String?
+  action       String
+  resourceType String?
+  resourceId   String?
+  details      Json?
+  ipAddress    String?
+  userAgent    String?
+
+  user         User?    @relation(fields: [userId], references: [id])
+
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
